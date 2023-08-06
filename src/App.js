@@ -1,24 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import EventCreation from './pages/EventCreation';
+import EventDiscovery from './pages/EventDiscovery';
+import EventDetail from './pages/EventDetail';
+
+import { Routes, Route } from 'react-router-dom';
+import UserSeeder from './pages/UserSeeder';
+import LoginAsAdmin from './pages/LoginAsAdmin';
+import LoginAsUser from './pages/LoginAsUser';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route path="/" element={<EventDiscovery />}/>
+      <Route path="/event-creation" element={<EventCreation />} />
+      <Route path="/event/:id" element={<EventDetail />} />
+
+      <Route path="/seeding" element={<UserSeeder />} />
+      <Route path="/admin-login" element={<LoginAsAdmin />} />
+      <Route path="/user-login" element={<LoginAsUser />} />
+    </Routes>
   );
 }
 
