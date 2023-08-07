@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Button, Row, Col, Stack } from 'react-bootstrap';
 import localforage from 'localforage';
-import Wrapper from '../utils/Wrapper';
+import Wrapper from '../components/Wrapper';
+import { getUser } from '../utils/auth';
+import { Route } from 'react-router-dom';
 
 const EventCreation = () => {
   const [eventName, setEventName] = useState('');
@@ -12,9 +14,29 @@ const EventCreation = () => {
   const [ticketTypes, setTicketTypes] = useState([
     { name: '', price: '', quantity: '' },
   ]);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    async function fetchUser() {
+      const user = await getUser();
+      if (!user || user.role !== 'admin') {
+        Route.navigate('/');
+      }
+
+      setUser(user);
+    }
+
+    fetchUser();
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // user without password
+    const u = {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+    }
 
     const event = {
       id: crypto.randomUUID(),
@@ -24,6 +46,7 @@ const EventCreation = () => {
       location,
       description,
       ticketTypes,
+      createdBy: u,
     }
 
     localforage.getItem('events').then((events) => {

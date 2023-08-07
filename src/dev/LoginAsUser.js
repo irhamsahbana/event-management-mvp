@@ -1,10 +1,10 @@
 import localforage from "localforage"
 
-const LoginAsAdmin = () => {
+const LoginAsUser = () => {
   localforage.getItem('users').then((users) => {
-    const client = users.find((user) => user.role === 'admin')
+    const client = users.find((user) => user.role === 'user')
 
-    localforage.setItem('client', client).then(() => {
+    localforage.setItem('user', client).then(() => {
       console.log('Current user set successfully')
     }).catch((err) => {
       console.log(err)
@@ -13,10 +13,8 @@ const LoginAsAdmin = () => {
     console.log(err)
   })
 
-
-
   return (
-    <div>LoginAsAdmin</div>
+    <div>LoginAsUser</div>
   )
 }
-export default LoginAsAdmin
+export default LoginAsUser

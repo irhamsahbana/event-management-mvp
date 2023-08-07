@@ -1,5 +1,5 @@
 import Container from "react-bootstrap/Container"
-import Navbar from "../components/Navbar"
+import Navbar from "./Navbar"
 
 const Wrapper = (props) => {
   return (

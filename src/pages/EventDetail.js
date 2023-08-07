@@ -1,12 +1,11 @@
 import { Row, Col } from "react-bootstrap"
-import Wrapper from "../utils/Wrapper"
+import Wrapper from "../components/Wrapper"
 import { useParams } from "react-router-dom"
 import localforage from "localforage"
 import { useState } from "react"
 
 
 const EventDetail = () => {
-
   const { id } = useParams()
   let [event, setEvent] = useState({})
 
