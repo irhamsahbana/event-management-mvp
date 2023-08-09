@@ -1,55 +1,113 @@
-import { Row, Col } from "react-bootstrap"
-import Wrapper from "../components/Wrapper"
-import { useParams } from "react-router-dom"
-import localforage from "localforage"
-import { useState } from "react"
-
+import React, { useEffect, useState } from 'react';
+import { Form, Row, Col, Stack } from 'react-bootstrap';
+import Wrapper from '../components/Wrapper';
+import localforage from 'localforage';
+import { useParams } from 'react-router-dom';
 
 const EventDetail = () => {
-  const { id } = useParams()
-  let [event, setEvent] = useState({})
+  const { id } = useParams();
+  const [event, setEvent] = useState({});
 
-  localforage.getItem('events').then((events) => {
-    if (events === null) events = [];
-    const event = events.find((event) => event.id === id);
+  useEffect(() => {
+    localforage.getItem('events').then((events) => {
+      if (events === null) events = [];
+      const foundEvent = events.find((event) => event.id === id);
 
-    setEvent(event);
-  }).catch((err) => {
-    console.log(err);
-  });
+      setEvent(foundEvent);
+    }).catch((err) => {
+      console.log(err);
+    });
+  }, [id]);
 
   return (
     <Wrapper>
       <h1>Event Detail</h1>
 
-      <Row>
-        <Col md={4}>
-          <h4>Event Name</h4>
-          <p>{event.eventName}</p>
+      <Form>
+        <Form.Group as={Row}>
+          <Col md={6}>
+            <Form.Label>Event Name</Form.Label>
+            <Form.Control
+              type="text"
+              value={event.eventName}
+              readOnly
+            />
+          </Col>
+          <Col md={6}>
+            <Form.Label>Category</Form.Label>
+            <Form.Control
+              type="text"
+              value={event.category?.name}
+              readOnly
+            />
+          </Col>
+        </Form.Group>
 
-          <h4>Date</h4>
-          <p>{event.date}</p>
+        <Form.Group as={Row}>
+          <Col md={6}>
+            <Form.Label>Date</Form.Label>
+            <Form.Control
+              type="text"
+              value={event.date}
+              readOnly
+            />
+          </Col>
+          <Col md={6}>
+            <Form.Label>Time</Form.Label>
+            <Form.Control
+              type="text"
+              value={event.time}
+              readOnly
+            />
+          </Col>
+        </Form.Group>
 
-          <h4>Time</h4>
-          <p>{event.time}</p>
+        <Form.Group controlId="location">
+          <Form.Label>Location</Form.Label>
+          <Form.Control
+            type="text"
+            value={event.location}
+            readOnly
+          />
+        </Form.Group>
 
-          <h4>Location</h4>
-          <p>{event.location}</p>
+        <Form.Group controlId="description">
+          <Form.Label>Description</Form.Label>
+          <Form.Control
+            as="textarea"
+            rows={4}
+            value={event.description}
+            readOnly
+          />
+        </Form.Group>
 
-          <h4>Description</h4>
-          <p>{event.description}</p>
-
-          <h4>Ticket Types</h4>
-          {event.ticketTypes?.map((ticketType, index) => (
+        <Form.Group controlId="ticketTypes">
+          <Form.Label>Ticket Types</Form.Label>
+          {event.ticketTypes?.map((ticket, index) => (
             <div key={index}>
-              <h5>{ticketType.name}</h5>
-              <p>Price: {ticketType.price}</p>
-              <p>Quantity: {ticketType.quantity}</p>
+              <Stack gap={3} direction="horizontal">
+                <Form.Control
+                  type="text"
+                  placeholder="Ticket type"
+                  value={ticket.name}
+                />
+                <Form.Control
+                  type="text"
+                  placeholder="Price"
+                  value={`$${ticket.price}`}
+                />
+                <Form.Control
+                  type="text"
+                  placeholder="Quantity"
+                  value={`${ticket.quantity} ticket left`}
+                />
+              </Stack>
             </div>
           ))}
-        </Col>
-      </Row>
+        </Form.Group>
+      </Form>
     </Wrapper>
-  )
-}
-export default EventDetail
+  );
+};
+
+export default EventDetail;

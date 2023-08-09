@@ -15,18 +15,29 @@ const EventCreation = () => {
     { name: '', price: '', quantity: '' },
   ]);
   const [user, setUser] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('');
 
   useEffect(() => {
-    async function fetchUser() {
+    async function fetchData() {
       const user = await getUser();
       if (!user || user.role !== 'admin') {
         Route.navigate('/');
       }
 
       setUser(user);
+
+      try {
+        const categories = await localforage.getItem('categories');
+        if (categories) {
+          setCategories(categories);
+        }
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
     }
 
-    fetchUser();
+    fetchData();
   }, []);
 
   const handleSubmit = (e) => {
@@ -38,8 +49,11 @@ const EventCreation = () => {
       name: user.name,
     }
 
+    const category = categories.find((category) => category.id === selectedCategory);
+
     const event = {
       id: crypto.randomUUID(),
+      category,
       eventName,
       date,
       time,
@@ -66,6 +80,7 @@ const EventCreation = () => {
     setLocation('');
     setDescription('');
     setTicketTypes([{ name: '', price: '', quantity: '' }]);
+    setSelectedCategory('');
   };
 
   const handleTicketTypeChange = (index, field, value) => {
@@ -83,14 +98,31 @@ const EventCreation = () => {
       <h1>Event Creation</h1>
 
       <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="eventName">
-          <Form.Label>Event Name</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Enter event name"
-            value={eventName}
-            onChange={(e) => setEventName(e.target.value)}
-          />
+        <Form.Group as={Row}>
+          <Col sm={6}>
+            <Form.Label>Event Name</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter event name"
+              value={eventName}
+              onChange={(e) => setEventName(e.target.value)}
+            />
+          </Col>
+          <Col sm={6}>
+            <Form.Label>Category</Form.Label>
+            <Form.Control
+              as="select"
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+            >
+              <option value="">Select a category</option>
+              {categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </Form.Control>
+          </Col>
         </Form.Group>
 
         <Form.Group as={Row}>
@@ -184,7 +216,7 @@ const EventCreation = () => {
           </Row>
         </Form.Group>
 
-        <Button variant="primary" type="submit" style={{ marginTop: '1rem' }}>
+        <Button variant="primary" type="submit" className='mt-3'>
           Create Event
         </Button>
       </Form>

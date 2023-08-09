@@ -16,6 +16,7 @@ const UserSeeder = () => {
       password: 'secret',
       role: 'user',
       points: 0,
+      money: 100,
       referralCode: 'ABC123'
     },
   ]).then(() => {

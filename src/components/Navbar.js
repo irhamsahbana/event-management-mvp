@@ -41,10 +41,13 @@ const MyNavbar = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <Stack direction="horizontal" gap={3}>
-              {user?.role === 'admin' &&
-                <Link to="/event-creation" style={linkStyle}>Create Event</Link>
-              }
               <Link to="/" style={linkStyle}>Event Discovery</Link>
+              {user?.role === 'admin' &&
+                <>
+                  <Link to="/event-creation" style={linkStyle}>Create Event</Link>
+                  <Link to="/dashboard" style={linkStyle}>Dashboard</Link>
+                </>
+              }
             </Stack>
           </Nav>
           <Nav>
