@@ -45,6 +45,7 @@ const MyNavbar = () => {
               {user?.role === 'admin' &&
                 <>
                   <Link to="/event-creation" style={linkStyle}>Create Event</Link>
+                  <Link to="/promotions" style={linkStyle}>Promotions</Link>
                   <Link to="/dashboard" style={linkStyle}>Dashboard</Link>
                 </>
               }

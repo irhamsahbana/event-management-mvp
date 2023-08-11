@@ -61,6 +61,7 @@ const EventCreation = () => {
       description,
       ticketTypes,
       createdBy: u,
+      attendees: [],
     }
 
     localforage.getItem('events').then((events) => {

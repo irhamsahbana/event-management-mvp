@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 
 import Dashboard from './pages/Dashboard';
+import Promotion from './pages/Promotion';
 import EventCreation from './pages/EventCreation';
 import EventDiscovery from './pages/EventDiscovery';
 import EventDetail from './pages/EventDetail';
@@ -17,6 +18,7 @@ function App() {
     <Routes>
       <Route path="/" element={<EventDiscovery />}/>
       <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/promotions" element={<Promotion />} />
       <Route path="/event-creation" element={<EventCreation />} />
       <Route path="/event/:id" element={<EventDetail />} />
       <Route path="/login" element={<Login />} />

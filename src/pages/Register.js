@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+
 import { Form, Button, Alert } from 'react-bootstrap';
-import localforage from 'localforage';
-import Wrapper from '../components/Wrapper';
 import { useNavigate } from 'react-router-dom';
+import localforage from 'localforage';
+import { nanoid } from 'nanoid';
+
+import Wrapper from '../components/Wrapper';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -20,7 +23,7 @@ const Register = () => {
         // User with this email already exists
         setRegistrationError(true);
       } else {
-        let newUser = { email, password, points: 0, role: 'user', referralCode: crypto.randomUUID() };
+        let newUser = { email, password, points: 0, role: 'user', referralCode: nanoid(5) };
 
         if (referralCode) {
           const referringUser = users.find(u => u.referralCode === referralCode);
